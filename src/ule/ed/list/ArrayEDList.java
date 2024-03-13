@@ -174,9 +174,10 @@ public class ArrayEDList<T> implements IEDList<T> {
 		for(int i = 0; i < count; i++) {
 			if(data[i] == elem) {
 				data[i] = null;
-				for(int j = i; j < count - 1; j++) {
+				for(int j = i; j < count; j++) {
 					data[j] = data[j + 1];
 				}
+				count--;
 				return i + 1;
 			}
 		}

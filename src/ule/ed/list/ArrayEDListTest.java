@@ -100,7 +100,18 @@ public class ArrayEDListTest {
 		lista.addFirst("7");
 		lista.addFirst("5");
 		lista.removeElem("7");
-		Assert.assertEquals("(5 3 2)", lista.toString());
+		Assert.assertEquals("(5 3 2 )", lista.toString());
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testRemoveElementException() throws EmptyCollectionException{
+		lista=new ArrayEDList<String>(3);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("5");
+		lista.removeElem("6");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
