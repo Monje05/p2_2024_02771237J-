@@ -158,6 +158,97 @@ public class ArrayEDListTest {
 		lista.getPosLast(null);
 	}
 
+	@Test
+	public void testRemoveAll() throws EmptyCollectionException {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		lista.addFirst("2");
+		lista.removeAll("2");
+		Assert.assertEquals("(7 3 )", lista.toString());
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testRemoveAllNullException() throws EmptyCollectionException {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		lista.addFirst("2");
+		lista.removeAll(null);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testRemoveAllNotFoundException() throws EmptyCollectionException {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		lista.addFirst("2");
+		lista.removeAll("6");
+	}
+
+	@Test(expected = EmptyCollectionException.class)
+	public void testRemoveAllEmptyException() throws EmptyCollectionException {
+		lista=new ArrayEDList<String>(6);
+		lista.removeAll("6");
+	}
+
+	@Test
+	public void testClear() {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		lista.addFirst("2");
+		lista.clear();
+		Assert.assertEquals("()", lista.toString());
+	}
+
+	@Test
+	public void testGetPosFirst() {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		Assert.assertEquals(3, lista.getPosLast("7"));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testGetPosFirstNullException() {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		lista.getPosLast(null);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testGetPosFirstNotFoundException() {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		lista.getPosLast("8");
+	}
 
 	//test de iteradores
 	@Test

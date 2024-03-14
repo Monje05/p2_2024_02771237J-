@@ -211,8 +211,28 @@ public class ArrayEDList<T> implements IEDList<T> {
 
 	@Override
 	public int removeAll(T elem) throws EmptyCollectionException {
-		// TODO 
-		return 0;
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		int contador = 0;
+		boolean found = false;
+		checkIsEmpty();
+		for(int i = 0; i < count; i++) {
+			if(data[i] == elem) {
+				found = true;
+				data[i] = null;
+				contador++;
+				for(int j = i; j < count - 1; j++) {
+					data[j] = data[j + 1];
+				}
+				count--;
+				i--;
+			}
+		}
+		if(!found) {
+			throw new NoSuchElementException();
+		}
+		return contador; 
 	}
 
 	@Override
@@ -230,14 +250,26 @@ public class ArrayEDList<T> implements IEDList<T> {
 	
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
+		for(int i = 0; i < count; i++) {
+			data[i] = null;
+		}
+		count = 0;
 		
 	}
 
 	@Override
 	public int getPosFirst(T elem) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		int pos = 0;
+		for(int i = 0; i < count; i++) {
+			if(data[i] == elem) {
+				pos = i + 1;
+				return pos;
+			}
+		}
+		throw new NoSuchElementException();
 	}
 
 	@Override
