@@ -14,25 +14,90 @@ public class ArrayEDList<T> implements IEDList<T> {
 
 	
 
-	private class ArrayEDListIterator<T> implements Iterator<T> {
+	private class ArrayEDListIterator implements Iterator<T> {
 		private int current=0;
-		private int count;
-		private T[] items;
+		private int size = count;
 
 		@Override
 		public boolean hasNext() {
-		return (current < count);
-		
+			return (current < size);
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public T next() {
 			if(!hasNext()) {
 				throw new NoSuchElementException();
 			}
+			T item = data[current];
 			current++;
-		return items[current - 1];
+			return item;
+		}
+	}
+
+	private class EvenPositionsIterator implements Iterator<T> {
+		private int current = 1;
+		private int size = count;
+
+		@Override
+		public boolean hasNext() {
+			return current < size;
+		}
+		
+		@Override
+		public T next() {
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T item = data[current];
+			current += 2;
+			return item;
+		}
+		
+	}
+
+	private class OddPositionsIterator implements Iterator<T> {
+		private int current = 0;
+		private int size = count;
+
+		@Override
+		public boolean hasNext() {
+			return current < size;
+		}
+
+		@Override
+		public T next() {
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T item = data[current];
+			current += 2;
+			return item;
+		}
+	}
+
+	private class OddEvenIterator implements Iterator<T> {
+		private int current = 1;
+		private int size = count;
+		private boolean isOddTurn = true;
+
+		@Override
+		public boolean hasNext() {
+			return current < size;
+		}
+
+		@Override
+		public T next() {
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T item = data[current];
+			if(isOddTurn) {
+				current += 2;
+			} else {
+				current += 1;
+			}
+			isOddTurn = !isOddTurn;
+			return item;
 		}
 	}
 
@@ -274,38 +339,44 @@ public class ArrayEDList<T> implements IEDList<T> {
 
 	@Override
 	public IEDList<T> listOfRepeatedElems() {
-		// TODO Auto-generated method stub
+		IEDList<T> lista = new ArrayEDList<T>(count);
+		for(int i = 0; i < count; i++) {
+		}
 		return null;
 	}
 
 	@Override
 	public int countElem(T elem) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		int contador = 0;
+		for(int i = 0; i < count; i++) {
+			if(data[i] == elem) {
+				contador++;
+			}
+		}
+		return contador;
 	}
 	
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return new ArrayEDListIterator<T>();
+		return new ArrayEDListIterator();
 	}
 
 
 	@Override
 	public Iterator<T> evenPositionsIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new EvenPositionsIterator();
 	}
 
 	@Override
 	public Iterator<T> oddPositionsIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new OddPositionsIterator();
 	}
 
 	@Override
 	public Iterator<T> OddEvenIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new OddEvenIterator();
 	}
 }

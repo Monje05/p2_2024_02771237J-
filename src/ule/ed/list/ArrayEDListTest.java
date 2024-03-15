@@ -250,6 +250,30 @@ public class ArrayEDListTest {
 		lista.getPosLast("8");
 	}
 
+	@Test
+	public void testCountElem() {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		Assert.assertEquals(2, lista.countElem("7"));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testCountElemException() {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		lista.countElem(null);
+	}
+
 	//test de iteradores
 	@Test
 	public void ArrayIteratorTest() {
@@ -289,9 +313,27 @@ public class ArrayEDListTest {
 		assertEquals("2", iter.next());
 		assertFalse(iter.hasNext());
 	}
-	
-	
-	
+
+	@Test
+	public void ArrayOddIteratorNElemesParTest() {
+		lista.addFirst("2");
+		Assert.assertFalse(lista.isEmpty());
+		Assert.assertEquals("(2 )", lista.toString());
+		lista.addFirst("3");
+		Assert.assertEquals("(3 2 )", lista.toString());
+		lista.addFirst("7");
+		Assert.assertEquals("(7 3 2 )", lista.toString());
+		lista.addFirst("8");
+		Assert.assertEquals("(8 7 3 2 )", lista.toString());
+
+		Iterator<String>  iter=lista.oddPositionsIterator();
+		assertTrue(iter.hasNext());
+		assertEquals("8", iter.next());
+		assertTrue(iter.hasNext());
+		assertEquals("3", iter.next());
+		assertFalse(iter.hasNext());
+	}
+
 	
 	// TEST ITERADORES EN LISTA VACÍA
 	@Test(expected=NoSuchElementException.class)
