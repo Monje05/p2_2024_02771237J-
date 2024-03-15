@@ -157,9 +157,6 @@ public class ArrayEDList<T> implements IEDList<T> {
 	@Override
 	public void addLast(T elem) {
 		checkNullExpandCapacityIfNeed(elem);
-		for(int i = 0; i <= count; i++) {
-			data[i] = data[i + 1];
-		}
 		data[count] = elem;
 		count++; 
 	}
@@ -169,12 +166,11 @@ public class ArrayEDList<T> implements IEDList<T> {
 		checkNullExpandCapacityIfNeed(elem);
 		if(isEmpty()) {
 			addFirst(elem);
-		}
-		for(int i = 0; i < count; i++) {
-			data[i] = data[i + 1];
-		}
-		data[count - 1] = elem;
-		count++; 
+		} else {
+			data[count] = data[count - 1];
+			data[count - 1] = elem;
+			count++;
+		} 
 	}
 
 	@Override
@@ -186,11 +182,11 @@ public class ArrayEDList<T> implements IEDList<T> {
 		if(position > count) {
 			addLast(elem);
 		}
-		for(int i = 0; i <= count; i++) {
-			if(i == position) {
-				data[i] = elem;
-			}
+		for(int i = count; i > position - 1; i--) {
+			data[i] = data[i - 1];
 		}
+		data[position - 1] = elem;
+		count++;
 	}
 
 	private void checkIsEmpty() throws EmptyCollectionException {
@@ -341,8 +337,20 @@ public class ArrayEDList<T> implements IEDList<T> {
 	public IEDList<T> listOfRepeatedElems() {
 		IEDList<T> lista = new ArrayEDList<T>(count);
 		for(int i = 0; i < count; i++) {
+			T element = data[i];
+			boolean repetido = false;
+			int count = 0;
+			for(int j = i + 1; j < count; j++) {
+				if(element == data[j]) {
+					count++;
+					break;
+				}
+			}
+			if(repetido) {
+				lista.addLast(element);
+			}
 		}
-		return null;
+		return lista;
 	}
 
 	@Override

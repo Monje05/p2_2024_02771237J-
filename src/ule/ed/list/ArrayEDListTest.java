@@ -54,6 +54,51 @@ public class ArrayEDListTest {
 	}
 
 	@Test
+	public void testAddLast() {
+		lista=new ArrayEDList<String>(3);
+		
+		lista.addFirst("2");
+		Assert.assertFalse(lista.isEmpty());
+		Assert.assertEquals("(2 )", lista.toString());
+		lista.addLast("3");
+		Assert.assertEquals("(2 3 )", lista.toString());
+		lista.addLast("7");
+		Assert.assertEquals("(2 3 7 )", lista.toString());
+		lista.addLast("10");
+		Assert.assertEquals("(2 3 7 10 )", lista.toString());		
+	}
+
+	@Test
+	public void testAddPenult() {
+		lista=new ArrayEDList<String>(3);
+		
+		lista.addFirst("2");
+		Assert.assertFalse(lista.isEmpty());
+		Assert.assertEquals("(2 )", lista.toString());
+		lista.addLast("3");
+		Assert.assertEquals("(2 3 )", lista.toString());
+		lista.addLast("7");
+		Assert.assertEquals("(2 3 7 )", lista.toString());
+		lista.addPenult("10");
+		Assert.assertEquals("(2 3 10 7 )", lista.toString());		
+	}
+
+	@Test
+	public void testAddPos() {
+		lista=new ArrayEDList<String>(3);
+		
+		lista.addFirst("2");
+		Assert.assertFalse(lista.isEmpty());
+		Assert.assertEquals("(2 )", lista.toString());
+		lista.addLast("3");
+		Assert.assertEquals("(2 3 )", lista.toString());
+		lista.addLast("7");
+		Assert.assertEquals("(2 3 7 )", lista.toString());
+		lista.addPos("10", 3);;
+		Assert.assertEquals("(2 3 10 7 )", lista.toString());		
+	}
+
+	@Test
 	public void testRemoveFirst() throws EmptyCollectionException {
 		lista=new ArrayEDList<String>(3);
 
@@ -223,7 +268,7 @@ public class ArrayEDListTest {
 		lista.addFirst("7");
 		lista.addFirst("7");
 		lista.addFirst("2");
-		Assert.assertEquals(3, lista.getPosLast("7"));
+		Assert.assertEquals(2, lista.getPosFirst("7"));
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -235,7 +280,7 @@ public class ArrayEDListTest {
 		lista.addFirst("7");
 		lista.addFirst("7");
 		lista.addFirst("2");
-		lista.getPosLast(null);
+		lista.getPosFirst(null);
 	}
 
 	@Test(expected = NoSuchElementException.class)
@@ -248,6 +293,20 @@ public class ArrayEDListTest {
 		lista.addFirst("7");
 		lista.addFirst("2");
 		lista.getPosLast("8");
+	}
+
+	@Test
+	public void testListRepeatedElems() {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		lista.addFirst("2");
+		lista.listOfRepeatedElems();
+		Assert.assertEquals("(2 7 )", lista.toString());
 	}
 
 	@Test
@@ -314,6 +373,15 @@ public class ArrayEDListTest {
 		assertFalse(iter.hasNext());
 	}
 
+	@Test(expected = NoSuchElementException.class)
+	public void testEvenIteratorException() {
+		lista.addFirst("2");
+
+		Iterator<String>  iter=lista.evenPositionsIterator();
+		iter.next();
+
+	}
+
 	@Test
 	public void ArrayOddIteratorNElemesParTest() {
 		lista.addFirst("2");
@@ -332,6 +400,15 @@ public class ArrayEDListTest {
 		assertTrue(iter.hasNext());
 		assertEquals("3", iter.next());
 		assertFalse(iter.hasNext());
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testOddIteratorException() {
+		lista.addFirst("2");
+
+		Iterator<String>  iter=lista.oddPositionsIterator();
+		iter.next();
+
 	}
 
 	
