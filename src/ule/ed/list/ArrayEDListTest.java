@@ -84,6 +84,13 @@ public class ArrayEDListTest {
 	}
 
 	@Test
+	public void testAddPenultEmpty() {
+		lista=new ArrayEDList<String>(3);
+		
+		lista.addPenult("2");		
+	}
+
+	@Test
 	public void testAddPos() {
 		lista=new ArrayEDList<String>(3);
 		
@@ -94,8 +101,24 @@ public class ArrayEDListTest {
 		Assert.assertEquals("(2 3 )", lista.toString());
 		lista.addLast("7");
 		Assert.assertEquals("(2 3 7 )", lista.toString());
-		lista.addPos("10", 3);;
+		lista.addPos("10", 3);
 		Assert.assertEquals("(2 3 10 7 )", lista.toString());		
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddPosException() {
+		lista=new ArrayEDList<String>(3);
+		
+		lista.addFirst("2");
+		Assert.assertFalse(lista.isEmpty());
+		Assert.assertEquals("(2 )", lista.toString());
+		lista.addPos("3", -1);	
+	}
+	@Test
+	public void testAddPosLast() {
+		lista=new ArrayEDList<String>();
+		
+		lista.addPos("3", 1);
 	}
 
 	@Test
@@ -292,7 +315,7 @@ public class ArrayEDListTest {
 		lista.addFirst("7");
 		lista.addFirst("7");
 		lista.addFirst("2");
-		lista.getPosLast("8");
+		lista.getPosFirst("8");
 	}
 
 	@Test
@@ -403,7 +426,6 @@ public class ArrayEDListTest {
 
 	@Test(expected = NoSuchElementException.class)
 	public void testOddIteratorException() {
-		lista.addFirst("2");
 
 		Iterator<String>  iter=lista.oddPositionsIterator();
 		iter.next();
