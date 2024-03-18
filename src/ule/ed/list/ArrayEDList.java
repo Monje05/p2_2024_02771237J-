@@ -76,7 +76,7 @@ public class ArrayEDList<T> implements IEDList<T> {
 	}
 
 	private class OddEvenIterator implements Iterator<T> {
-		private int current = 1;
+		private int current = 0;
 		private int size = count;
 		private boolean isOddTurn = true;
 
@@ -335,19 +335,10 @@ public class ArrayEDList<T> implements IEDList<T> {
 
 	@Override
 	public IEDList<T> listOfRepeatedElems() {
-		IEDList<T> lista = new ArrayEDList<T>(count);
+		ArrayEDList<T> lista = new ArrayEDList<T>(count);
 		for(int i = 0; i < count; i++) {
-			T element = data[i];
-			boolean repetido = false;
-			int count = 0;
-			for(int j = i + 1; j < count; j++) {
-				if(element == data[j]) {
-					count++;
-					break;
-				}
-			}
-			if(repetido) {
-				lista.addLast(element);
+			if(countElem(data[i]) > 1 && !lista.contains(data[i])) {
+				lista.addLast(data[i]);
 			}
 		}
 		return lista;
@@ -360,7 +351,7 @@ public class ArrayEDList<T> implements IEDList<T> {
 		}
 		int contador = 0;
 		for(int i = 0; i < count; i++) {
-			if(data[i] == elem) {
+			if(data[i].equals(elem)) {
 				contador++;
 			}
 		}
@@ -386,5 +377,15 @@ public class ArrayEDList<T> implements IEDList<T> {
 	@Override
 	public Iterator<T> OddEvenIterator() {
 		return new OddEvenIterator();
+	}
+
+	private boolean contains(T element) {
+		boolean contains = false;
+		for(int i = 0; i < count && !contains; i++) {
+			if(element.equals(data[i])) {
+				contains = true;
+			}
+		}
+		return contains;
 	}
 }

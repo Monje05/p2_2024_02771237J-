@@ -305,8 +305,7 @@ public class ArrayEDListTest {
 		lista.addFirst("7");
 		lista.addFirst("2");
 		lista.addFirst("2");
-		lista.listOfRepeatedElems();
-		Assert.assertEquals("(2 7 )", lista.toString());
+		Assert.assertEquals("(2 7 )", lista.listOfRepeatedElems().toString());
 	}
 
 	@Test
@@ -408,6 +407,34 @@ public class ArrayEDListTest {
 
 		Iterator<String>  iter=lista.oddPositionsIterator();
 		iter.next();
+
+	}
+
+	@Test
+    public void testOddEvenIterator() {
+        ArrayEDList<Integer> lista = new ArrayEDList<>();
+        lista.addLast(1);
+        lista.addLast(2);
+        lista.addLast(3);
+        lista.addLast(4);
+        lista.addLast(5);
+        
+        Iterator<Integer> iterator = lista.OddEvenIterator();
+        
+        assertTrue(iterator.hasNext());
+        assertEquals(Integer.valueOf(1), iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals(Integer.valueOf(3), iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals(Integer.valueOf(4), iterator.next());
+        assertFalse(iterator.hasNext());
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testOddEvenIteratorException() {
+		ArrayEDList<String> lista = new ArrayEDList<>();
+		Iterator<String> iter = lista.OddEvenIterator();
+		iter.next(); 
 
 	}
 
