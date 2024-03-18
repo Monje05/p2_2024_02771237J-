@@ -226,6 +226,18 @@ public class ArrayEDListTest {
 		lista.getPosLast(null);
 	}
 
+	@Test(expected = NoSuchElementException.class)
+	public void testGetPosLastNoSuchException() {
+		lista=new ArrayEDList<String>(6);
+
+		lista.addFirst("2");
+		lista.addFirst("3");
+		lista.addFirst("7");
+		lista.addFirst("2");
+		lista.addFirst("2");
+		lista.getPosLast("8");
+	}
+
 	@Test
 	public void testRemoveAll() throws EmptyCollectionException {
 		lista=new ArrayEDList<String>(6);
