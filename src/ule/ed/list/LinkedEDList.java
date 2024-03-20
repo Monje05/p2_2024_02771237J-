@@ -58,67 +58,169 @@ public class LinkedEDList<T> implements IEDList<T> {
 
 	@Override
 	public int size() {
-		// TODO 
-		
-		return 0;
+		int count = 0;
+		Node <T> aux = front;
+		while(aux != null) {
+			count++;
+			aux = aux.next;
+		}
+		return count;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO 
-		return false;
+		return front == null;
 	}
 
 	@Override
 	public void addFirst(T elem) {
-		// TODO 
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		Node<T> nodeAdd = new Node<T>(elem);
+		nodeAdd.next = front;
+		front = nodeAdd;
 	}
 
 	@Override
 	public void addLast(T elem) {
-		// TODO 
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		if(isEmpty()) {
+			addFirst(elem);
+		} else {
+			Node<T>current = front;
+			while (current.next != null) {
+				current = current.next;
+			}
+			Node<T> nodeAdd = new Node<T>(elem);
+			current.next = nodeAdd;
+		}
 	}
 
 	@Override
 	public void addPenult(T elem) {
-		// TODO 
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		if(isEmpty()) {
+			addFirst(elem);
+		} else {
+			Node<T> current = front;
+			while (current.next != null && current.next.next != null) {
+				current = current.next;
+			}
+			Node<T> nodeAdd = new Node<T>(elem);
+			nodeAdd.next = current.next;
+			current.next = nodeAdd;
+		}
 	}
 
 	@Override
 	public void addPos(T elem, int position) {
-		// TODO 
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		if(position < 0) {
+			throw new IllegalArgumentException();
+		}
+		if(position == 0) {
+			addFirst(elem);
+			return;
+		}
+		Node<T> current = front;
+		Node<T> nodeAdd = new Node<T>(elem);
+		int i = 0;
+		while (current != null && i < position - 2) {
+			current = current.next;
+			i++;
+		}
+		if(current == null) {
+			throw new IllegalArgumentException();
+		}
+		nodeAdd.next = current.next;
+		current.next = nodeAdd;
 	}
 
 	@Override
 	public T removeFirst() throws EmptyCollectionException {
-		// TODO 
+		if(isEmpty()) {
+			throw new EmptyCollectionException("La lista está vacía.");
+		} 
+		T removeElement = front.elem;
+		front = front.next;
 	    
-		return null;
+		return removeElement;
 	}
 
 	@Override
 	public T removelast() throws EmptyCollectionException {
-		// TODO 
-		return null;
+		if(isEmpty()) {
+			throw new EmptyCollectionException("La lista está vacía.");
+		} 
+		if(front.next == null) {
+			removeFirst();
+		}
+		Node<T> current = front;
+		while (current.next.next != null) {
+			current = current.next;
+		}
+		T removeElement = current.next.elem;
+		current.next = null;
+	    
+		return removeElement;
 	}
 
 	@Override
 	public T removePenult() throws EmptyCollectionException {
-		// TODO 
-		return null;
+		if(isEmpty()){
+			throw new EmptyCollectionException("La lista esta vacía.");
+		}
+		if(front.next == null) {
+			throw new NoSuchElementException();
+		}
+		Node<T> current = front;
+		while (current.next.next.next != null) {
+			current = current.next;
+		}
+		T removeElement = current.next.elem;
+		current.next = current.next.next;
+		return removeElement;
 		
 	}
 	
 	@Override
 	public T getElemPos(int position) {
-		// TODO 
-		return null;
+		if(position < 0) {
+			throw new IllegalArgumentException();
+		}
+		Node<T> current = front;
+		for(int i = 0; i == position; i++) {
+			if(current == null) {
+				throw new IllegalArgumentException();
+			}
+			current = current.next;
+		}
+		return current.elem;
 	}
-
 	@Override
 	public int getPosLast(T elem) {
-		// TODO	
-		return 0;
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		Node<T> current = front;
+		int lastPosition = -1;
+		for(int i = 0; current != null; i++) {
+			if(current.elem.equals(elem)) {
+				lastPosition = i + 1;
+			}
+			current = current.next;
+		}
+		if(lastPosition == -1) {
+			throw new NoSuchElementException();
+		}	
+		return lastPosition;
 	 }
 	
 
@@ -133,9 +235,15 @@ public class LinkedEDList<T> implements IEDList<T> {
 	
 	@Override
 	public String toString() {
-		// TODO
-		
-		return "";
+		StringBuilder result = new StringBuilder("(");
+		Node<T> current = front;
+		while (current != null) {
+			result.append(current.elem);
+			result.append(" ");
+			current = current.next;
+		}
+		result.append(")");
+		return result.toString();
 	}
 
 
