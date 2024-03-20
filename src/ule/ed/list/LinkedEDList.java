@@ -125,7 +125,7 @@ public class LinkedEDList<T> implements IEDList<T> {
 		if(position < 0) {
 			throw new IllegalArgumentException();
 		}
-		if(position == 0) {
+		if(position == 1) {
 			addFirst(elem);
 			return;
 		}
@@ -196,7 +196,7 @@ public class LinkedEDList<T> implements IEDList<T> {
 			throw new IllegalArgumentException();
 		}
 		Node<T> current = front;
-		for(int i = 0; i == position; i++) {
+		for(int i = 0; i < position - 1; i++) {
 			if(current == null) {
 				throw new IllegalArgumentException();
 			}
@@ -226,8 +226,32 @@ public class LinkedEDList<T> implements IEDList<T> {
 
 	@Override
 	public int removeAll(T elem) throws EmptyCollectionException {
-		// TODO 	
-		return 0;
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		if(isEmpty()) {
+			throw new EmptyCollectionException("La lista esta vacía.");
+		}
+		Node<T> current = front;
+		Node<T> previous = null;
+		int count = 0;
+		while(current != null){
+			if(current.elem.equals(elem)) {
+				if(previous == null) {
+					front = current.next;
+				} else {
+					previous.next = current.next;
+				}
+				count++;
+			} else {
+				previous = current;
+			}
+			current = current.next;
+		}
+		if(count == 0) {
+			throw new NoSuchElementException();
+		}
+		return count;
 
 	}
 
@@ -249,8 +273,30 @@ public class LinkedEDList<T> implements IEDList<T> {
 
 		@Override
 		public int removeElem(T elem) throws EmptyCollectionException {
-			// TODO Auto-generated method stub
-			return 0;
+			if(isEmpty()) {
+				throw new EmptyCollectionException("La lista esta vacía.");
+			}
+			Node<T> current = front;
+			Node<T> previous = null;
+			int position = 0;
+			for(int i = 0; current != null; i++) {
+				if(current.elem.equals(elem)) {
+					if(previous == null) {
+						front = current.next;
+					} else {
+						previous.next = current.next;
+					}
+				position = i + 1;
+				break;
+				} else {
+						previous = current;
+				}
+				current = current.next;
+				}
+			if(position == 0) {
+				throw new NoSuchElementException();
+			}
+			return position;
 		}
 
 	
@@ -263,26 +309,78 @@ public class LinkedEDList<T> implements IEDList<T> {
 
 		@Override
 		public void clear() {
-			// TODO Auto-generated method stub
+			Node<T> current = front;
+			Node<T> previous = null;
+			while(current != null) {
+				if(previous == null) {
+					front = current.next;
+				} else {
+					previous.next = current.next;
+				}
+				current = current.next;
+			}
 			
 		}
 
 		@Override
 		public int getPosFirst(T elem) {
-			// TODO Auto-generated method stub
-			return 0;
+			if(elem == null) {
+				throw new NullPointerException();
+			}
+			Node<T> current = front;
+			int firstPosition = -1;
+			for(int i = 0; current != null; i++) {
+				if(current.elem.equals(elem)) {
+					firstPosition = i + 1;
+					break;
+				}
+				current = current.next;
+			}
+			if(firstPosition == -1) {
+				throw new NoSuchElementException();
+			}	
+			return firstPosition;
 		}
 
 		@Override
 		public IEDList<T> listOfRepeatedElems() {
-			// TODO Auto-generated method stub
-			return null;
+			IEDList<T> repeatedElementList = new LinkedEDList<>(); 
+			Node<T> current = front;
+			while(current != null) {
+				if(countElem(current.elem) > 1 && !repeatedElementList.contains(current.elem)){
+					repeatedElementList.addLast(current.elem);
+				}
+				current = current.next;
+			}
+			return repeatedElementList;
+		}
+
+		private boolean contains(T element) {
+			boolean contains = false;
+			Node<T> current = front;
+			while(current != null && !contains) {
+				if(current.elem.equals(element)){
+					contains = true;
+				}
+				current = current.next;
+			}
+			return contains;
 		}
 
 		@Override
 		public int countElem(T elem) {
-			// TODO Auto-generated method stub
-			return 0;
+			if(elem == null) {
+				throw new NullPointerException();
+			}
+			Node<T> current = front;
+			int count = 0;
+			while(current != null) {
+				if(current.elem.equals(elem)) {
+					count++;
+				}
+				current = current.next;
+			}
+			return count;
 		}
 
 		@Override
