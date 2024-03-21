@@ -478,5 +478,7 @@ public class LinkedEDListTest {
 	// TEST ITERADORES EN LISTA VACÍA
 	@Test(expected=NoSuchElementException.class)
 	public void ArrayNextListaVaciaTest() {
-			lista.iterator().next();	}
+			lista.iterator().next();	
+	}
+
 }
