@@ -448,7 +448,7 @@ public class LinkedEDListTest {
 
 	@Test
     public void testOddEvenIterator() {
-        ArrayEDList<Integer> lista = new ArrayEDList<>();
+    	LinkedEDList<Integer> lista = new	LinkedEDList<>();
         lista.addLast(1);
         lista.addLast(2);
         lista.addLast(3);
@@ -468,7 +468,7 @@ public class LinkedEDListTest {
 
 	@Test(expected = NoSuchElementException.class)
 	public void testOddEvenIteratorException() {
-		ArrayEDList<String> lista = new ArrayEDList<>();
+		LinkedEDList<String> lista = new	LinkedEDList<>();
 		Iterator<String> iter = lista.OddEvenIterator();
 		iter.next(); 
 

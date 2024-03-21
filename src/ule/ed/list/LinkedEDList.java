@@ -27,29 +27,108 @@ public class LinkedEDList<T> implements IEDList<T> {
 	//@SuppressWarnings("hiding")
 	private class LinkedListIterator<T> implements Iterator<T> {
 		// declarar atributos del iterador
+		private Node<T> current;
 		
 		public LinkedListIterator(Node<T> aux) {
-			//TODO
+			current = aux;
 		}
 
 		@Override
 		public boolean hasNext() {
-			//TODO
-			
-			return false;
+			return current != null;
 		}
 
 		@Override
 		public T next() {
-	  // TODO
-			
-			return null;
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T element = current.elem;
+			current = current.next;
+			return element;
 
 			
 		}	
 	}
 	
-	/// TODO :  AÑADIR OTRAS CLASES PARA LOS OTROS ITERADORES
+	private class EvenPositionsIterator<T> implements Iterator<T> {
+		private Node<T> current;
+
+		public EvenPositionsIterator(Node<T> aux){
+			current = aux;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return current != null && current.next != null;
+		}
+
+		@Override
+		public T next() {
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T element = current.next.elem;
+			current = current.next.next;
+			return element;
+		}
+		
+	}
+
+	private class OddPositionsIterator<T> implements Iterator<T> {
+		private Node<T> current;
+		
+		public OddPositionsIterator(Node<T> aux) {
+			current = aux;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return current != null;
+		}
+
+		@Override
+		public T next() {
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T element = current.elem;
+			current = current.next.next;
+			return element;
+		}
+		
+	}
+
+	private class OddEvenIterator<T> implements Iterator<T> {
+		private Node<T> current;
+		private boolean isOddTurn;
+
+		public OddEvenIterator(Node<T> aux) {
+			current = aux;
+			isOddTurn = true;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return current != null;
+		}
+
+		@Override
+		public T next() {
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+
+			T element = current.elem;
+			current = current.next;
+			if(isOddTurn && current != null){
+				current = current.next;
+			}
+			isOddTurn = !isOddTurn;
+			return element;
+		}
+		
+	}
 	
 		// FIN ITERADORES
 		
@@ -301,8 +380,7 @@ public class LinkedEDList<T> implements IEDList<T> {
 
 	
 		@Override
-		public Iterator<T> iterator() {
-			// TODO 
+		public Iterator<T> iterator(){ 
 			return new LinkedListIterator<T>(front);
 		}
 		
@@ -344,7 +422,7 @@ public class LinkedEDList<T> implements IEDList<T> {
 
 		@Override
 		public IEDList<T> listOfRepeatedElems() {
-			IEDList<T> repeatedElementList = new LinkedEDList<>(); 
+			LinkedEDList<T> repeatedElementList = new LinkedEDList<>(); 
 			Node<T> current = front;
 			while(current != null) {
 				if(countElem(current.elem) > 1 && !repeatedElementList.contains(current.elem)){
@@ -385,19 +463,16 @@ public class LinkedEDList<T> implements IEDList<T> {
 
 		@Override
 		public Iterator<T> evenPositionsIterator() {
-			// TODO Auto-generated method stub
-			return null;
+			return new EvenPositionsIterator<>(front);
 		}
 
 		@Override
 		public Iterator<T> oddPositionsIterator() {
-			// TODO Auto-generated method stub
-			return null;
+			return new OddPositionsIterator<>(front);
 		}
 
 		@Override
 		public Iterator<T> OddEvenIterator() {
-			// TODO Auto-generated method stub
-			return null;
+			return new OddEvenIterator<>(front);
 		}
 }
