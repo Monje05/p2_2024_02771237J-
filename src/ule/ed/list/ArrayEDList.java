@@ -164,7 +164,7 @@ public class ArrayEDList<T> implements IEDList<T> {
 	@Override
 	public void addPenult(T elem) {
 		checkNullExpandCapacityIfNeed(elem);
-		if(isEmpty()) {
+		if(size() < 2) {
 			addFirst(elem);
 		} else {
 			data[count] = data[count - 1];

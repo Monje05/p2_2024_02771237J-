@@ -183,7 +183,7 @@ public class LinkedEDList<T> implements IEDList<T> {
 		if(elem == null) {
 			throw new NullPointerException();
 		}
-		if(isEmpty()) {
+		if(size() < 2) {
 			addFirst(elem);
 		} else {
 			Node<T> current = front;
