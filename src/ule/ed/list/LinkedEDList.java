@@ -293,9 +293,6 @@ public class LinkedEDList<T> implements IEDList<T> {
 		}
 		Node<T> current = front;
 		for(int i = 0; i < position - 1; i++) {
-			if(current == null) {
-				throw new IllegalArgumentException();
-			}
 			current = current.next;
 		}
 		return current.elem;

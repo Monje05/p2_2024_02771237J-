@@ -370,6 +370,65 @@ public class LinkedEDListTest {
 		lista.countElem(null);
 	}
 
+	@Test(expected = EmptyCollectionException.class) 
+	public void testRemoveFirstException() throws EmptyCollectionException {
+		lista = new LinkedEDList<String>();
+		lista.removeFirst();
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testAddLastException() throws NullPointerException {
+		lista = new LinkedEDList<String>();
+		lista.addFirst("5");
+		lista.addLast(null);
+	}
+
+	@Test(expected = EmptyCollectionException.class) 
+	public void testRemoveLastException() throws EmptyCollectionException {
+		lista = new LinkedEDList<String>();
+		lista.removelast();
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testAddPenultException() throws NullPointerException{
+		lista = new LinkedEDList<String>();
+		lista.addFirst("2");
+		lista.addFirst("4");
+		lista.addPenult(null);
+	}
+
+	@Test(expected = EmptyCollectionException.class) 
+	public void testRemovePenultException() throws EmptyCollectionException {
+		lista = new LinkedEDList<String>();
+		lista.removePenult();
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testRemovePenultExceptionSuch() throws EmptyCollectionException{
+		lista = new LinkedEDList<String>();
+		lista.addFirst("2");
+		lista.removePenult();
+	}
+
+	@Test(expected = EmptyCollectionException.class) 
+	public void testRemoveElemException() throws EmptyCollectionException {
+		lista = new LinkedEDList<String>();
+		lista.removeElem("2");
+	}
+
+	@Test(expected = NullPointerException.class) 
+	public void testRemoveElemNullException() throws EmptyCollectionException {
+		lista = new LinkedEDList<String>();
+		lista.addFirst("2");
+		lista.removeElem(null);
+	}
+
+	@Test(expected = NullPointerException.class) 
+	public void testAddPosNullException() throws EmptyCollectionException {
+		lista = new LinkedEDList<String>();
+		lista.addFirst("2");
+		lista.addPos(null, 3);
+	}
 	//test de iteradores
 	@Test
 	public void ArrayIteratorTest() {
