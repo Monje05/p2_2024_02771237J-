@@ -115,6 +115,7 @@ public class LinkedEDListTest {
 		Assert.assertFalse(lista.isEmpty());
 		Assert.assertEquals("(2 )", lista.toString());
 		lista.addPos("3", -1);	
+		lista.addPos("3", 15);
 	}
 	@Test
 	public void testAddPosLast() {
@@ -462,8 +463,8 @@ public class LinkedEDListTest {
         assertTrue(iterator.hasNext());
         assertEquals(Integer.valueOf(3), iterator.next());
         assertTrue(iterator.hasNext());
-        assertEquals(Integer.valueOf(4), iterator.next());
-        assertFalse(iterator.hasNext());
+        assertEquals(Integer.valueOf(5), iterator.next());
+		assertEquals(Integer.valueOf(2), iterator.next());
 	}
 
 	@Test(expected = NoSuchElementException.class)

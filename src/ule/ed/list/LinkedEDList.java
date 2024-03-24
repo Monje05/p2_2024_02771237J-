@@ -54,80 +54,89 @@ public class LinkedEDList<T> implements IEDList<T> {
 	private class EvenPositionsIterator<T> implements Iterator<T> {
 		private Node<T> current;
 
-		public EvenPositionsIterator(Node<T> aux){
-			current = aux;
-		}
+        public EvenPositionsIterator(Node<T> front) {
+            if (front != null) {
+                this.current = front.next;
+            }
+        }
 
-		@Override
-		public boolean hasNext() {
-			return current != null && current.next != null;
-		}
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
 
-		@Override
-		public T next() {
-			if(!hasNext()) {
-				throw new NoSuchElementException();
-			}
-			T element = current.next.elem;
-			current = current.next.next;
-			return element;
-		}
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            T element = current.elem;
+            if (current.next != null) {
+                current = current.next.next;
+            } else {
+                current = null;
+            }
+            return element;
+        }
 		
 	}
 
 	private class OddPositionsIterator<T> implements Iterator<T> {
 		private Node<T> current;
-		
-		public OddPositionsIterator(Node<T> aux) {
-			current = aux;
-		}
 
-		@Override
-		public boolean hasNext() {
-			return current != null;
-		}
+        public OddPositionsIterator(Node<T> front) {
+            this.current = front;
+        }
 
-		@Override
-		public T next() {
-			if(!hasNext()) {
-				throw new NoSuchElementException();
-			}
-			T element = current.elem;
-			current = current.next.next;
-			return element;
-		}
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            T element = current.elem;
+            if (current.next != null) {
+                current = current.next.next;
+            } else {
+                current = null;
+            }
+            return element;
+        }
 		
 	}
 
-	private class OddEvenIterator<T> implements Iterator<T> {
-		private Node<T> current;
-		private boolean isOddTurn;
-
-		public OddEvenIterator(Node<T> aux) {
-			current = aux;
-			isOddTurn = true;
+	public class OddEvenIterator<T> implements Iterator<T> {
+		private Iterator<T> evenIterator;
+		private Iterator<T> oddIterator;
+	
+		public OddEvenIterator(Node<T> front) {
+			this.evenIterator = new EvenPositionsIterator<>(front);
+			this.oddIterator = new OddPositionsIterator<>(front);
 		}
-
+	
 		@Override
 		public boolean hasNext() {
-			return current != null;
+			return evenIterator.hasNext() || oddIterator.hasNext();
 		}
-
+	
 		@Override
 		public T next() {
-			if(!hasNext()) {
+			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
-
-			T element = current.elem;
-			current = current.next;
-			if(isOddTurn && current != null){
-				current = current.next;
+	
+			if (oddIterator.hasNext()) {
+				return oddIterator.next();
+			} else {
+				return evenIterator.next();
 			}
-			isOddTurn = !isOddTurn;
-			return element;
 		}
-		
 	}
 	
 		// FIN ITERADORES
@@ -208,12 +217,15 @@ public class LinkedEDList<T> implements IEDList<T> {
 			addFirst(elem);
 			return;
 		}
+		if(position > size() + 1) {
+			throw new IllegalArgumentException();
+		}
 		Node<T> current = front;
 		Node<T> nodeAdd = new Node<T>(elem);
-		int i = 0;
-		while (current != null && i < position - 2) {
+		int currentPosition = 1;
+		while(current != null && currentPosition < position - 1) {
 			current = current.next;
-			i++;
+			currentPosition++;
 		}
 		if(current == null) {
 			throw new IllegalArgumentException();
@@ -260,6 +272,11 @@ public class LinkedEDList<T> implements IEDList<T> {
 			throw new NoSuchElementException();
 		}
 		Node<T> current = front;
+		if (current.next.next == null) {
+			T removeElement = current.elem;
+			front = current.next;
+			return removeElement;
+		}
 		while (current.next.next.next != null) {
 			current = current.next;
 		}
@@ -271,7 +288,7 @@ public class LinkedEDList<T> implements IEDList<T> {
 	
 	@Override
 	public T getElemPos(int position) {
-		if(position < 0) {
+		if(position <= 0 || position > size()) {
 			throw new IllegalArgumentException();
 		}
 		Node<T> current = front;
@@ -354,6 +371,9 @@ public class LinkedEDList<T> implements IEDList<T> {
 		public int removeElem(T elem) throws EmptyCollectionException {
 			if(isEmpty()) {
 				throw new EmptyCollectionException("La lista esta vacía.");
+			}
+			if(elem == null) {
+				throw new NullPointerException();
 			}
 			Node<T> current = front;
 			Node<T> previous = null;
