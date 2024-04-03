@@ -181,12 +181,21 @@ public class ArrayEDList<T> implements IEDList<T> {
 		}
 		if(position > count) {
 			addLast(elem);
-		}
-		for(int i = count; i > position - 1; i--) {
+		} else {
+		    if (count == data.length) {
+				@SuppressWarnings("unchecked")
+				T[] larger = (T[])(new Object[data.length * 2]);
+				for(int index = 0; index < data.length; index++) {
+					larger[index] = data[index];
+				}
+				data = larger;
+		    }
+		    for(int i = count; i > position - 1; i--) {
 			data[i] = data[i - 1];
+		    }
+		    data[position - 1] = elem;
+		    count++;
 		}
-		data[position - 1] = elem;
-		count++;
 	}
 
 	private void checkIsEmpty() throws EmptyCollectionException {
@@ -220,6 +229,9 @@ public class ArrayEDList<T> implements IEDList<T> {
 	@Override
 	public T removePenult() throws EmptyCollectionException {
 		checkIsEmpty();
+		if(count == 1) {
+		    throw new NoSuchElementException();
+		}
 		T dataaux = data[count - 2];
 		data[count - 2] = null;
 		for(int i = count - 2; i < count - 1; i++) {
